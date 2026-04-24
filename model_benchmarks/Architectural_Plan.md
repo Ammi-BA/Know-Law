@@ -521,7 +521,7 @@ REAL RESULTS (from my training run):
 ## Project Folder Structure
 
 ```
-e:\project_prototype\
+KnowLaw-AI/  (project root)
 │
 ├── App.py                          ← Main Streamlit app (all UI + routing)
 ├── auth.py                         ← Login, register, appointments, password reset

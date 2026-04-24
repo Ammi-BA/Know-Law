@@ -507,6 +507,53 @@ def format_docs(docs) -> str:
     )
 
 
+# ── Legal category map: CSV filename stem → human-readable label ──────────────
+# Keys MUST match the actual CSV filenames in cleaned_datasets/ exactly.
+_FILE_TO_CATEGORY = {
+    "final_datset_for_civil_law":                       "Civil Law",
+    "commircial_law_final_dataset":                     "Commercial Law",
+    "dataset_companies_law":                            "Companies Law",
+    "final_dataset_for_Criminal_Procedure":             "Criminal Procedure",
+    "finished_dataset_for_penalty_law":                 "Penalty Law",
+    "final_dataset_for_labor_constitution":             "Labor & Constitutional Law",
+    "finished_dataset_for_family_law2":                 "Family Law",
+    "final_dataset_for_invesment":                      "Investment Law",
+    "finished_dataset_for_main_bank":                   "Banking Law",
+    "law_for_money_capital":                            "Capital Markets Law",
+    "Data_Protection_Law_dataset":                      "Data Protection Law",
+    "final_dataset_for_cyber_crimes":                   "Cyber Crimes Law",
+    "finished_dataset_for_civil_comircial_procedures":  "Civil & Commercial Procedures",
+    "finished_dataset_for_magles_eldawla":              "State Council Law",
+    "final_dataset_fro_Protection_of_Competition":      "Competition Law",
+    "final_dataset_law_of_inhertince":                  "Inheritance Law",
+    "landord_lawnew-old":                               "Landlord & Tenant Law",
+    "final_dataset_for_Consumer_Protection_Law":        "Consumer Protection Law",
+}
+
+
+def get_category_from_docs(docs: list) -> str | None:
+    """
+    Determines the legal badge from the metadata of the retrieved documents.
+    This is more accurate than classifying the question itself because it reads
+    the actual law files that Chroma returned — the answer ALWAYS comes from
+    those files, so the badge correctly reflects the legal area used.
+    Returns the most frequently appearing law category, or None.
+    """
+    from collections import Counter
+    stems = [
+        doc.metadata.get("file", "").replace(".csv", "")
+        for doc in docs
+        if doc.metadata.get("file", "")
+    ]
+    if not stems:
+        return None
+    most_common_stem = Counter(stems).most_common(1)[0][0]
+    return _FILE_TO_CATEGORY.get(
+        most_common_stem,
+        most_common_stem.replace("_", " ").title()  # fallback: prettify the filename
+    )
+
+
 def validate_email(email: str) -> bool:
     return bool(re.match(r"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$", email))
 
@@ -919,7 +966,12 @@ elif st.session_state.page == "chat":
                 st.markdown(prompt)
 
             with st.chat_message("assistant"):
-                predicted_category = classify_question(prompt)
+                # ── Retrieve relevant docs first ──────────────────────────────
+                retriever = main_db.as_retriever(search_kwargs={"k": 5})
+                retrieved_docs = retriever.invoke(prompt)
+
+                # ── Badge: based on retrieved docs (always correct) ───────────
+                predicted_category = get_category_from_docs(retrieved_docs)
                 if predicted_category:
                     st.markdown(
                         f"""<div style='margin-bottom:10px;'>
@@ -930,7 +982,8 @@ elif st.session_state.page == "chat":
                         </span></div>""",
                         unsafe_allow_html=True,
                     )
-                retriever = main_db.as_retriever(search_kwargs={"k": 5})
+
+                # ── Generate answer using the same retriever ──────────────────
                 chain = (
                     {"context": retriever | format_docs, "question": RunnablePassthrough()}
                     | get_legal_prompt(prompt, st.session_state.messages_general)

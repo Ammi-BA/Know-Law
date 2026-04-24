@@ -17,7 +17,7 @@ If you are reading the code for the first time, we recommend reading the Python 
 | **`database_setup.py`** | SQLite schema builder. Creates the local user tables. |
 | **`brain_AI_databese(vector).py`** | AI Engine. Builds the vector database for Llama 3 to search. |
 | **`vault_manager.py`** | Helper functions for saving and loading chat history. |
-| **`generate_data.py`** | Generates sample lawyer profiles for testing the directory. |
+| **`generate_data.py`** | Optional placeholder. The Lawyer Directory is populated through the app's registration and admin approval flow. |
 
 ### 2. Configuration & Setup
 | File Name | Purpose |
@@ -31,7 +31,7 @@ If you are reading the code for the first time, we recommend reading the Python 
 | Folder / File Name | Purpose |
 | :--- | :--- |
 | **`cleaned_datasets/`** | The 5,340 cleaned Egyptian law articles used for the AI. |
-| **`lawyers.csv`** | The generated mock data for the Lawyer Directory. |
+
 | **`law_db/`** | *(Generated locally)* The Chroma vector database built from the CSVs. |
 | **`knowlaw.db`** | *(Generated locally)* SQLite database storing users and chat history. |
 | **`my_laws/`** | Legacy folder containing the original, uncleaned datasets. |

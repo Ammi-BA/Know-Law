@@ -46,12 +46,14 @@ pip install -r requirements.txt
 
 GitHub also blocked our massive databases. You need to tell your computer to generate them locally.
 
-### 1. Build & Populate the User Database
-First, create the empty tables (`knowlaw.db`), then populate them with mock lawyers and users so the Lawyer Directory isn't empty:
+### 1. Build the User Database
+Create the empty database tables and the default Admin account:
 ```powershell
 python database_setup.py
-python generate_data.py
 ```
+
+> **How the Lawyer Directory gets populated:**  
+> The directory is not pre-filled with mock data. A lawyer must register through the app's registration form, then the Admin must approve their account. Once approved, they appear in the Lawyer Directory automatically. This is the intended workflow.
 
 ### 2. Build the AI Vector Database (RAG)
 This script reads the 5,340 laws inside the `cleaned_datasets/` folder and mathematically converts them into a Chroma vector database (the `law_db` folder).

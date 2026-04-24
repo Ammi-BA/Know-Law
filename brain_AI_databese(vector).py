@@ -9,7 +9,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 # --- CONFIGURATION ---
 # Cleaned dataset folder produced by clean_and_optimize_datasets.py
-DATA_FOLDER = r"e:\data_set for egyptianlaw\cleaned_datasets"
+DATA_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cleaned_datasets")
 # Absolute path so the DB is always built in the project folder
 DB_FOLDER   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "law_db")
 

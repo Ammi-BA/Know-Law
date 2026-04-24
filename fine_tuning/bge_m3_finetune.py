@@ -60,8 +60,8 @@ warnings.filterwarnings("ignore")
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
-DATASET_DIR   = Path(r"e:\data_set for egyptianlaw\cleaned_datasets")
-OUTPUT_DIR    = Path(r"e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned")
+DATASET_DIR   = Path(__file__).parent.parent / "cleaned_datasets"
+OUTPUT_DIR    = Path(__file__).parent / "outputs" / "bge_m3_finetuned"
 MODEL_NAME    = "BAAI/bge-m3"
 
 # ── GPU-optimised settings (fast mode) ─────────────────────────────────────

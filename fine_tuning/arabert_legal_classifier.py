@@ -50,8 +50,8 @@ warnings.filterwarnings("ignore")
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
-DATASET_DIR   = Path(r"e:\data_set for egyptianlaw\cleaned_datasets")
-OUTPUT_DIR    = Path(r"e:\project_prototype\fine_tuning\outputs")
+DATASET_DIR   = Path(__file__).parent.parent / "cleaned_datasets"
+OUTPUT_DIR    = Path(__file__).parent / "outputs"
 MODEL_NAME    = "aubmindlab/bert-base-arabertv2"
 MAX_LEN       = 256       # max tokens (covers 98% of Arabic law article texts)
 BATCH_SIZE    = 16        # safe for most GPUs

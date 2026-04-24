@@ -1,3 +1,16 @@
+"""
+=============================================================================
+auth.py (SECURITY & LOGIN MODULE)
+=============================================================================
+This file handles all user authentication logic.
+Read this file second, after understanding App.py.
+
+It manages:
+- Logging in and Registering users
+- Securely hashing passwords using bcrypt
+- Sending password reset emails via SMTP
+- Session management across Streamlit pages
+"""
 import sqlite3
 import hashlib
 import os

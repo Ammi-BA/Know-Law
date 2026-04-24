@@ -1,3 +1,15 @@
+"""
+=============================================================================
+brain_AI_databese(vector).py (AI RAG ENGINE BUILDER)
+=============================================================================
+This file is the core of the Retrieval-Augmented Generation (RAG) system.
+Read this file fourth.
+
+It takes the raw text laws (from the CSV datasets) and mathematically 
+converts them into a 1024-Dimensional Chroma Vector Database using the 
+fine-tuned BGE-M3 embedding model. This allows Llama 3 to instantly 
+search and retrieve relevant laws when a user asks a question.
+"""
 import pandas as pd
 import glob
 import os

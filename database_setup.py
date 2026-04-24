@@ -1,3 +1,17 @@
+"""
+=============================================================================
+database_setup.py (SQLITE SCHEMA BUILDER)
+=============================================================================
+This file initializes the local user database.
+Read this file third, to understand how data is stored.
+
+It executes the SQL commands to create tables for:
+- Users & Lawyer Profiles
+- Chat History
+- Vault Files (OCR documents and Contracts)
+- Lawyer Appointments
+- Password Resets
+"""
 import sqlite3
 import bcrypt
 import os

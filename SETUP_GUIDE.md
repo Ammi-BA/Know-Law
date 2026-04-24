@@ -46,10 +46,11 @@ pip install -r requirements.txt
 
 GitHub also blocked our massive databases. You need to tell your computer to generate them locally.
 
-### 1. Build the SQLite User Database
-This creates the `knowlaw.db` file which stores users, lawyers, and appointments.
+### 1. Build & Populate the User Database
+First, create the empty tables (`knowlaw.db`), then populate them with mock lawyers and users so the Lawyer Directory isn't empty:
 ```powershell
 python database_setup.py
+python generate_data.py
 ```
 
 ### 2. Build the AI Vector Database (RAG)

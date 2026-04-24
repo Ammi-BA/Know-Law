@@ -1,3 +1,14 @@
+"""
+=============================================================================
+App.py (MAIN ENTRY POINT)
+=============================================================================
+This is the core frontend and routing application for KnowLaw AI.
+If you are new to the project, start reading here!
+
+This file controls the Streamlit user interface, navigation between pages,
+and calls the backend AI models (Llama 3, AraBERT, BGE-M3) when users 
+interact with the Chatbot, OCR, or Contract Generator.
+"""
 import streamlit as st
 import os
 import re

@@ -1,0 +1,171 @@
+[14:22:06]  =================================================================
+[14:22:06]  KnowLaw AI -- AraBERT Legal Domain Classifier
+[14:22:06]  =================================================================
+[14:22:06]  WARNING: No GPU found -- training on CPU (will be slow)
+[14:22:06]  Loading cleaned Egyptian law datasets...
+[14:22:06]     Loaded  715 rows  [commircial_law_final_dataset.csv]  ->  Commercial Law
+[14:22:06]     Loaded   56 rows  [Data_Protection_Law_dataset.csv]  ->  Data Protection Law
+[14:22:06]     Loaded  218 rows  [dataset_companies_law.csv]  ->  Companies Law
+[14:22:06]     Loaded   81 rows  [final_dataset_for_Consumer_Protection_Law.csv]  ->  Consumer Protection Law
+[14:22:06]     Loaded  502 rows  [final_dataset_for_Criminal_Procedure.csv]  ->  Criminal Procedure
+[14:22:06]     Loaded   45 rows  [final_dataset_for_cyber_crimes.csv]  ->  Cyber Crimes Law
+[14:22:06]     Loaded  207 rows  [final_dataset_for_invesment.csv]  ->  Investment Law
+[14:22:06]     Loaded  558 rows  [final_dataset_for_labor_constitution.csv]  ->  Labor & Constitutional
+[14:22:06]     Loaded   45 rows  [final_dataset_fro_Protection_of_Competition.csv]  ->  Competition Law
+[14:22:06]     Loaded   48 rows  [final_dataset_law_of_inhertince.csv]  ->  Inheritance Law
+[14:22:06]     Loaded 1084 rows  [final_datset_for_civil_law.csv]  ->  Civil Law
+[14:22:06]     Loaded  493 rows  [finished_dataset_for_civil_comircial_procedures.csv]  ->  Civil & Commercial Procedures
+[14:22:06]     Loaded  153 rows  [finished_dataset_for_family_law2.csv]  ->  Family Law
+[14:22:06]     Loaded  132 rows  [finished_dataset_for_magles_eldawla.csv]  ->  State Council Law
+[14:22:06]     Loaded  249 rows  [finished_dataset_for_main_bank.csv]  ->  Banking Law
+[14:22:06]     Loaded  533 rows  [finished_dataset_for_penalty_law.csv]  ->  Penalty Law
+[14:22:06]     Loaded   79 rows  [landord_lawnew-old.csv]  ->  Landlord & Tenant Law
+[14:22:06]     Loaded  122 rows  [law_for_money_capital.csv]  ->  Capital Markets Law
+[14:22:06]  Total rows loaded: 5,320
+[14:22:06]  Final dataset: 5,320 rows across 18 classes
+[14:22:06]  Label encoding: 18 classes
+[14:22:06]      0  Banking Law
+[14:22:06]      1  Capital Markets Law
+[14:22:06]      2  Civil & Commercial Procedures
+[14:22:06]      3  Civil Law
+[14:22:06]      4  Commercial Law
+[14:22:06]      5  Companies Law
+[14:22:06]      6  Competition Law
+[14:22:06]      7  Consumer Protection Law
+[14:22:06]      8  Criminal Procedure
+[14:22:06]      9  Cyber Crimes Law
+[14:22:06]     10  Data Protection Law
+[14:22:06]     11  Family Law
+[14:22:06]     12  Inheritance Law
+[14:22:06]     13  Investment Law
+[14:22:06]     14  Labor & Constitutional
+[14:22:06]     15  Landlord & Tenant Law
+[14:22:06]     16  Penalty Law
+[14:22:06]     17  State Council Law
+[14:22:06]  Split  -  Train: 3,724  |  Val: 798  |  Test: 798
+[14:22:06]  Label map saved -> e:\project_prototype\fine_tuning\outputs\label_mapping.json
+[14:22:06]  Loading tokeniser: aubmindlab/bert-base-arabertv2
+[14:22:09]  Loading model: aubmindlab/bert-base-arabertv2
+[14:24:45]  Model parameters: 135.2M
+[14:24:45]  Total training steps: 1,165  |  Warmup steps: 116
+[14:24:45]  =================================================================
+[14:24:45]  Starting training (5 epochs)...
+[14:24:45]  =================================================================
+[14:33:56]    Epoch 1/5 | Step   50/233 | Train Loss: 2.8289
+[14:43:05]    Epoch 1/5 | Step  100/233 | Train Loss: 2.5836
+[14:52:03]    Epoch 1/5 | Step  150/233 | Train Loss: 2.3308
+[15:01:01]    Epoch 1/5 | Step  200/233 | Train Loss: 2.1154
+[15:06:54]    Epoch 1/5 | Step  233/233 | Train Loss: 1.9860
+[15:08:54]  
+[15:08:54]  EPOCH 1/5 SUMMARY  (2649s)
+[15:08:54]    Train Loss : 1.9860
+[15:08:54]    Val Loss   : 1.0978
+[15:08:54]    Val Acc    : 71.80%
+[15:08:54]    Val F1     : 0.3749
+[15:08:54]  
+[15:08:55]    ** New best model saved (Val F1=0.3749) **
+[15:17:57]    Epoch 2/5 | Step   50/233 | Train Loss: 1.0000
+[15:26:53]    Epoch 2/5 | Step  100/233 | Train Loss: 0.9281
+[15:35:49]    Epoch 2/5 | Step  150/233 | Train Loss: 0.8569
+[15:44:50]    Epoch 2/5 | Step  200/233 | Train Loss: 0.8088
+[15:50:52]    Epoch 2/5 | Step  233/233 | Train Loss: 0.7779
+[15:52:59]  
+[15:52:59]  EPOCH 2/5 SUMMARY  (2644s)
+[15:52:59]    Train Loss : 0.7779
+[15:52:59]    Val Loss   : 0.5665
+[15:52:59]    Val Acc    : 85.84%
+[15:52:59]    Val F1     : 0.6721
+[15:52:59]  
+[15:53:00]    ** New best model saved (Val F1=0.6721) **
+[16:02:02]    Epoch 3/5 | Step   50/233 | Train Loss: 0.5055
+[16:11:01]    Epoch 3/5 | Step  100/233 | Train Loss: 0.4852
+[16:20:09]    Epoch 3/5 | Step  150/233 | Train Loss: 0.4563
+[16:28:59]    Epoch 3/5 | Step  200/233 | Train Loss: 0.4303
+[16:34:21]    Epoch 3/5 | Step  233/233 | Train Loss: 0.4198
+[16:36:07]  
+[16:36:07]  EPOCH 3/5 SUMMARY  (2587s)
+[16:36:07]    Train Loss : 0.4198
+[16:36:07]    Val Loss   : 0.4585
+[16:36:07]    Val Acc    : 88.85%
+[16:36:07]    Val F1     : 0.8050
+[16:36:07]  
+[16:36:08]    ** New best model saved (Val F1=0.8050) **
+[16:44:45]    Epoch 4/5 | Step   50/233 | Train Loss: 0.3280
+[16:53:08]    Epoch 4/5 | Step  100/233 | Train Loss: 0.2870
+[17:01:04]    Epoch 4/5 | Step  150/233 | Train Loss: 0.2705
+[17:09:17]    Epoch 4/5 | Step  200/233 | Train Loss: 0.2615
+[17:14:58]    Epoch 4/5 | Step  233/233 | Train Loss: 0.2561
+[17:16:59]  
+[17:16:59]  EPOCH 4/5 SUMMARY  (2451s)
+[17:16:59]    Train Loss : 0.2561
+[17:16:59]    Val Loss   : 0.3708
+[17:16:59]    Val Acc    : 91.35%
+[17:16:59]    Val F1     : 0.8535
+[17:16:59]  
+[17:17:00]    ** New best model saved (Val F1=0.8535) **
+[17:25:38]    Epoch 5/5 | Step   50/233 | Train Loss: 0.2088
+[17:34:27]    Epoch 5/5 | Step  100/233 | Train Loss: 0.2037
+[17:43:17]    Epoch 5/5 | Step  150/233 | Train Loss: 0.1983
+[17:52:14]    Epoch 5/5 | Step  200/233 | Train Loss: 0.1905
+[17:57:43]    Epoch 5/5 | Step  233/233 | Train Loss: 0.1846
+[17:59:39]  
+[17:59:39]  EPOCH 5/5 SUMMARY  (2559s)
+[17:59:39]    Train Loss : 0.1846
+[17:59:39]    Val Loss   : 0.3734
+[17:59:39]    Val Acc    : 91.10%
+[17:59:39]    Val F1     : 0.8460
+[17:59:39]  
+[17:59:39]  =================================================================
+[17:59:39]  Training complete. Best Val F1: 0.8535 at Epoch 4
+[17:59:39]  =================================================================
+[17:59:39]  Loading best model for test evaluation...
+[18:01:45]  
+[18:01:45]  =================================================================
+[18:01:45]  TEST SET RESULTS
+[18:01:45]  =================================================================
+[18:01:45]    Test Loss     : 0.3078
+[18:01:45]    Test Accuracy : 91.23%
+[18:01:45]    Test Macro F1 : 0.8387
+[18:01:45]  
+[18:01:45]  Per-Class Classification Report:
+[18:01:45]                                   precision    recall  f1-score   support
+[18:01:45]    
+[18:01:45]                      Banking Law       0.97      0.86      0.91        37
+[18:01:45]              Capital Markets Law       0.76      0.72      0.74        18
+[18:01:45]    Civil & Commercial Procedures       0.90      0.82      0.86        74
+[18:01:45]                        Civil Law       0.91      0.95      0.93       163
+[18:01:45]                   Commercial Law       0.94      0.98      0.96       107
+[18:01:45]                    Companies Law       0.84      0.94      0.89        33
+[18:01:45]                  Competition Law       1.00      0.14      0.25         7
+[18:01:45]          Consumer Protection Law       0.60      0.75      0.67        12
+[18:01:45]               Criminal Procedure       0.87      0.95      0.90        75
+[18:01:45]                 Cyber Crimes Law       1.00      0.86      0.92         7
+[18:01:45]              Data Protection Law       0.88      0.88      0.88         8
+[18:01:45]                       Family Law       0.84      0.70      0.76        23
+[18:01:45]                  Inheritance Law       1.00      0.57      0.73         7
+[18:01:45]                   Investment Law       0.94      0.94      0.94        31
+[18:01:45]           Labor & Constitutional       0.98      0.98      0.98        84
+[18:01:45]            Landlord & Tenant Law       1.00      0.92      0.96        12
+[18:01:45]                      Penalty Law       0.99      0.97      0.98        80
+[18:01:45]                State Council Law       0.85      0.85      0.85        20
+[18:01:45]    
+[18:01:45]                         accuracy                           0.91       798
+[18:01:45]                        macro avg       0.90      0.82      0.84       798
+[18:01:45]                     weighted avg       0.92      0.91      0.91       798
+[18:01:45]    
+[18:01:45]  Report saved -> e:\project_prototype\fine_tuning\outputs\test_classification_report.txt
+[18:01:45]  Metrics JSON saved -> e:\project_prototype\fine_tuning\outputs\final_metrics.json
+[18:01:46]  Learning curves saved -> e:\project_prototype\fine_tuning\outputs\learning_curves.png
+[18:01:46]  Confusion matrix saved -> e:\project_prototype\fine_tuning\outputs\confusion_matrix.png
+[18:01:46]  
+[18:01:46]  =================================================================
+[18:01:46]  ALL DONE! Find your outputs at:
+[18:01:46]    e:\project_prototype\fine_tuning\outputs
+[18:01:46]    - best_model/          <- saved model checkpoint
+[18:01:46]    - learning_curves.png  <- loss, accuracy, F1 curves
+[18:01:46]    - confusion_matrix.png <- normalised confusion matrix
+[18:01:46]    - test_classification_report.txt
+[18:01:46]    - final_metrics.json
+[18:01:46]    - label_mapping.json
+[18:01:46]    - training_log.txt
+[18:01:46]  =================================================================

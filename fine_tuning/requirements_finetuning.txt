@@ -1,0 +1,14 @@
+# AraBERT Fine-Tuning Requirements
+# Install with: pip install -r requirements_finetuning.txt
+
+torch>=2.2.0
+transformers>=4.40.0
+datasets>=2.18.0
+scikit-learn>=1.4.0
+pandas>=2.0.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+sentencepiece>=0.1.99
+protobuf>=4.25.0
+accelerate>=0.28.0

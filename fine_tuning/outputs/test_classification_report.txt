@@ -1,0 +1,30 @@
+KnowLaw AI -- AraBERT Legal Classifier
+Test Set Classification Report
+============================================================
+Test Accuracy : 91.23%
+Test Macro F1 : 0.8387
+
+                               precision    recall  f1-score   support
+
+                  Banking Law       0.97      0.86      0.91        37
+          Capital Markets Law       0.76      0.72      0.74        18
+Civil & Commercial Procedures       0.90      0.82      0.86        74
+                    Civil Law       0.91      0.95      0.93       163
+               Commercial Law       0.94      0.98      0.96       107
+                Companies Law       0.84      0.94      0.89        33
+              Competition Law       1.00      0.14      0.25         7
+      Consumer Protection Law       0.60      0.75      0.67        12
+           Criminal Procedure       0.87      0.95      0.90        75
+             Cyber Crimes Law       1.00      0.86      0.92         7
+          Data Protection Law       0.88      0.88      0.88         8
+                   Family Law       0.84      0.70      0.76        23
+              Inheritance Law       1.00      0.57      0.73         7
+               Investment Law       0.94      0.94      0.94        31
+       Labor & Constitutional       0.98      0.98      0.98        84
+        Landlord & Tenant Law       1.00      0.92      0.96        12
+                  Penalty Law       0.99      0.97      0.98        80
+            State Council Law       0.85      0.85      0.85        20
+
+                     accuracy                           0.91       798
+                    macro avg       0.90      0.82      0.84       798
+                 weighted avg       0.92      0.91      0.91       798

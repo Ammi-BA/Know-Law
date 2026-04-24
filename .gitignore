@@ -1,0 +1,46 @@
+# KnowLaw AI - .gitignore
+# This file tells GitHub what NOT to upload to the internet.
+
+# ==========================================
+# 1. SECRETS & PASSWORDS (CRITICAL)
+# ==========================================
+# NEVER upload your .env file because it contains your Gmail App Password and Admin Password!
+.env
+
+# ==========================================
+# 2. LOCAL DATABASES & USER UPLOADS
+# ==========================================
+# Do not upload the SQLite database since it contains local user passwords and appointments
+knowlaw.db
+
+# Do not upload the massive Vector DB folder (it can be regenerated easily by running the script)
+law_db/
+
+# Do not upload user PDFs or contracts they downloaded
+vault_data/
+
+# ==========================================
+# 3. HEAVY MACHINE LEARNING FILES
+# ==========================================
+# Do not upload large model weights (.safetensors, .bin) from fine-tuning
+fine_tuning/outputs/best_model/*.bin
+fine_tuning/outputs/best_model/*.safetensors
+fine_tuning/outputs/bge_m3_finetuned/model/*.bin
+fine_tuning/outputs/bge_m3_finetuned/model/*.safetensors
+
+# ==========================================
+# 4. SYSTEM INSTALLERS (Too large)
+# ==========================================
+LLM/
+OCR/
+
+# ==========================================
+# 5. PYTHON AUTOMATIC SYSTEM FILES
+# ==========================================
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env/
+.pytest_cache/
+.DS_Store

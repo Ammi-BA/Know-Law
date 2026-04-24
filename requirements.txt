@@ -1,0 +1,44 @@
+# KnowLaw AI — Dependencies
+# Install with: pip install -r requirements.txt
+
+# ── Web UI ──────────────────────────────────────────────────────────────────
+streamlit>=1.40.0
+
+# ── LangChain Ecosystem ─────────────────────────────────────────────────────
+langchain>=0.3.0
+langchain-chroma>=0.1.4
+langchain-huggingface>=0.1.0
+langchain-ollama>=0.2.0
+langchain-text-splitters>=0.3.0
+langchain-core>=0.3.0
+
+# ── Vector Database ──────────────────────────────────────────────────────────
+chromadb>=0.5.0
+
+# ── Embeddings & NLP Models ──────────────────────────────────────────────────
+sentence-transformers>=3.0.0
+transformers>=4.40.0          # Required for AraBERT classifier (classify_question)
+huggingface-hub>=0.23.0
+
+# ── PyTorch (CPU — remove +cpu suffix if you have CUDA GPU) ─────────────────
+torch>=2.0.0
+
+# ── OCR ──────────────────────────────────────────────────────────────────────
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# ── PDF ──────────────────────────────────────────────────────────────────────
+pypdf>=4.0.0
+
+# ── Language Detection ───────────────────────────────────────────────────────
+langdetect>=1.0.9
+
+# ── Security ─────────────────────────────────────────────────────────────────
+bcrypt>=4.0.0
+
+# ── Data ─────────────────────────────────────────────────────────────────────
+pandas>=2.0.0
+numpy>=1.26.0
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0

@@ -1,0 +1,138 @@
+[18:14:18]  =================================================================
+[18:14:18]  KnowLaw AI -- BGE-M3 Egyptian Law Domain Adaptation
+[18:14:18]  =================================================================
+[18:14:18]  Method : Contrastive Learning (MultipleNegativesRankingLoss)
+[18:14:18]  Base   : BAAI/bge-m3
+[18:14:18]  Output : e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned
+[18:14:18]  WARNING: No GPU -- training on CPU (very slow, not recommended)
+[18:14:18]  Loading cleaned Egyptian law datasets from:
+[18:14:18]    e:\data_set for egyptianlaw\cleaned_datasets
+[18:14:18]     Loaded  715 pairs  [commircial_law_final_dataset.csv]
+[18:14:18]     Loaded   56 pairs  [Data_Protection_Law_dataset.csv]
+[18:14:18]     Loaded  218 pairs  [dataset_companies_law.csv]
+[18:14:18]     Loaded   81 pairs  [final_dataset_for_Consumer_Protection_Law.csv]
+[18:14:18]     Loaded  502 pairs  [final_dataset_for_Criminal_Procedure.csv]
+[18:14:18]     Loaded   45 pairs  [final_dataset_for_cyber_crimes.csv]
+[18:14:18]     Loaded  207 pairs  [final_dataset_for_invesment.csv]
+[18:14:18]     Loaded  555 pairs  [final_dataset_for_labor_constitution.csv]
+[18:14:18]     Loaded   45 pairs  [final_dataset_fro_Protection_of_Competition.csv]
+[18:14:18]     Loaded   48 pairs  [final_dataset_law_of_inhertince.csv]
+[18:14:18]     Loaded 1084 pairs  [final_datset_for_civil_law.csv]
+[18:14:18]     Loaded  493 pairs  [finished_dataset_for_civil_comircial_procedures.csv]
+[18:14:18]     Loaded  149 pairs  [finished_dataset_for_family_law2.csv]
+[18:14:18]     Loaded  132 pairs  [finished_dataset_for_magles_eldawla.csv]
+[18:14:18]     Loaded  249 pairs  [finished_dataset_for_main_bank.csv]
+[18:14:18]     Loaded  529 pairs  [finished_dataset_for_penalty_law.csv]
+[18:14:18]     Loaded   79 pairs  [landord_lawnew-old.csv]
+[18:14:18]     Loaded  122 pairs  [law_for_money_capital.csv]
+[18:14:18]  Total positive pairs: 5,309
+[18:14:18]  Training pairs  : 4,512
+[18:14:18]  Validation pairs: 797
+[18:14:18]  
+[18:14:18]  Loading base model: BAAI/bge-m3
+[18:14:18]  (Downloads ~570MB on first run, cached after that)
+[18:14:24]  
+[18:14:24]  --- BASELINE EVALUATION (before fine-tuning) ---
+[18:14:24]    Computing embeddings for 200 pairs (baseline)...
+[18:15:31]    Avg Cosine Similarity: 0.4746
+[18:15:31]    MRR@10               : 0.2929
+[18:15:31]  
+[18:15:31]  =================================================================
+[18:15:31]  Starting Fine-Tuning
+[18:15:31]  =================================================================
+[18:15:31]  Epochs      : 3
+[18:15:31]  Batch Size  : 8
+[18:15:31]  LR          : 2e-05
+[18:15:31]  Train pairs : 4,512
+[18:15:31]  Warmup steps: 169
+[18:15:31]  
+[18:15:31]  --- Epoch 1/3 ---
+[18:41:17]  =================================================================
+[18:41:17]  KnowLaw AI -- BGE-M3 Egyptian Law Domain Adaptation
+[18:41:17]  =================================================================
+[18:41:17]  Method : Contrastive Learning (MultipleNegativesRankingLoss)
+[18:41:17]  Base   : BAAI/bge-m3
+[18:41:17]  Output : e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned
+[18:41:17]  WARNING: No GPU -- training on CPU (very slow, not recommended)
+[18:41:17]  Loading cleaned Egyptian law datasets from:
+[18:41:17]    e:\data_set for egyptianlaw\cleaned_datasets
+[18:41:17]     Loaded  715 pairs  [commircial_law_final_dataset.csv]
+[18:41:17]     Loaded   56 pairs  [Data_Protection_Law_dataset.csv]
+[18:41:17]     Loaded  218 pairs  [dataset_companies_law.csv]
+[18:41:17]     Loaded   81 pairs  [final_dataset_for_Consumer_Protection_Law.csv]
+[18:41:17]     Loaded  502 pairs  [final_dataset_for_Criminal_Procedure.csv]
+[18:41:17]     Loaded   45 pairs  [final_dataset_for_cyber_crimes.csv]
+[18:41:17]     Loaded  207 pairs  [final_dataset_for_invesment.csv]
+[18:41:17]     Loaded  555 pairs  [final_dataset_for_labor_constitution.csv]
+[18:41:17]     Loaded   45 pairs  [final_dataset_fro_Protection_of_Competition.csv]
+[18:41:17]     Loaded   48 pairs  [final_dataset_law_of_inhertince.csv]
+[18:41:17]     Loaded 1084 pairs  [final_datset_for_civil_law.csv]
+[18:41:17]     Loaded  493 pairs  [finished_dataset_for_civil_comircial_procedures.csv]
+[18:41:17]     Loaded  149 pairs  [finished_dataset_for_family_law2.csv]
+[18:41:17]     Loaded  132 pairs  [finished_dataset_for_magles_eldawla.csv]
+[18:41:17]     Loaded  249 pairs  [finished_dataset_for_main_bank.csv]
+[18:41:17]     Loaded  529 pairs  [finished_dataset_for_penalty_law.csv]
+[18:41:17]     Loaded   79 pairs  [landord_lawnew-old.csv]
+[18:41:17]     Loaded  122 pairs  [law_for_money_capital.csv]
+[18:41:17]  Total positive pairs loaded: 5,309
+[18:41:17]  Subsampled to 1,500 pairs (RTX 3050 fast mode)
+[18:41:17]  Training pairs  : 1,275
+[18:41:17]  Validation pairs: 225
+[18:41:17]  
+[18:41:17]  Loading base model: BAAI/bge-m3
+[18:41:17]  (Downloads ~570MB on first run, cached after that)
+[18:41:22]  
+[18:41:22]  --- BASELINE EVALUATION (before fine-tuning) ---
+[18:41:22]    Computing embeddings for 200 pairs (baseline)...
+[18:41:59]    Avg Cosine Similarity: 0.4609
+[18:41:59]    MRR@10               : 0.3163
+[18:41:59]  
+[18:41:59]  =================================================================
+[18:41:59]  Starting Fine-Tuning
+[18:41:59]  =================================================================
+[18:41:59]  Epochs      : 2
+[18:41:59]  Batch Size  : 4
+[18:41:59]  LR          : 2e-05
+[18:41:59]  Train pairs : 1,275
+[18:41:59]  Warmup steps: 63
+[18:41:59]  
+[18:41:59]  --- Epoch 1/2 ---
+[19:23:10]    Epoch 1 | Val Cosine Sim: 0.5831 | Time: 2451s
+[19:23:10]  --- Epoch 2/2 ---
+[20:03:12]    Epoch 2 | Val Cosine Sim: 0.5969 | Time: 2382s
+[20:03:12]  
+[20:03:12]  --- FINAL EVALUATION (after fine-tuning) ---
+[20:03:12]    Computing embeddings for 200 pairs (fine-tuned)...
+[20:03:47]    Avg Cosine Similarity: 0.5864
+[20:03:47]    MRR@10               : 0.4733
+[20:03:47]  
+[20:03:47]  =================================================================
+[20:03:47]  RESULTS SUMMARY
+[20:03:47]  =================================================================
+[20:03:47]  Metric             Before     After    Improvement
+[20:03:47]  --------------------------------------------------
+[20:03:47]  Avg Cosine Sim     0.4609    0.5864   +27.2%
+[20:03:47]  MRR@10             0.3163    0.4733   +49.6%
+[20:03:55]  
+[20:03:55]  Fine-tuned model saved -> e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned\model
+[20:03:55]  Metrics saved -> e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned\eval_metrics.json
+[20:03:56]  Training curves saved -> e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned\training_curves.png
+[20:03:56]  
+[20:03:56]  =================================================================
+[20:03:56]  NEXT STEP -- Update brain_AI_databese(vector).py:
+[20:03:56]  
+[20:03:56]    Change MODEL_NAME from:
+[20:03:56]      "BAAI/bge-m3"
+[20:03:56]    To (local fine-tuned model):
+[20:03:56]      r"e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned\model"
+[20:03:56]  
+[20:03:56]    Then re-run brain_AI_databese(vector).py to rebuild the
+[20:03:56]    vector database using your domain-adapted embeddings.
+[20:03:56]  =================================================================
+[20:03:56]  
+[20:03:56]  ALL DONE! Outputs saved to:
+[20:03:56]    e:\project_prototype\fine_tuning\outputs\bge_m3_finetuned
+[20:03:56]    - model/               <- fine-tuned BGE-M3 checkpoint
+[20:03:56]    - training_curves.png  <- loss + before/after comparison charts
+[20:03:56]    - eval_metrics.json    <- all metrics in JSON format
+[20:03:56]    - training_log.txt     <- full training log

@@ -1,0 +1,27 @@
+{
+  "base_model": "BAAI/bge-m3",
+  "finetuned_model_path": "e:\\project_prototype\\fine_tuning\\outputs\\bge_m3_finetuned\\model",
+  "training": {
+    "epochs": 2,
+    "batch_size": 4,
+    "lr": 2e-05,
+    "train_pairs": 1275,
+    "val_pairs": 225,
+    "epoch_proxy_losses": [
+      0.4169,
+      0.4031
+    ]
+  },
+  "evaluation": {
+    "before": {
+      "cos_sim": 0.4608594477176666,
+      "mrr": 0.31632936507936504
+    },
+    "after": {
+      "cos_sim": 0.5863950252532959,
+      "mrr": 0.47332142857142856
+    },
+    "improvement_cos_pct": 27.24,
+    "improvement_mrr_pct": 49.63
+  }
+}

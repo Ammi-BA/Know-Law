@@ -93,9 +93,10 @@ def init_db():
     # ── Lawyer Profiles ────────────────────────────────────────────────────────
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Lawyer_Profiles (
-            user_id   INTEGER PRIMARY KEY,
-            specialty TEXT,
-            bio       TEXT,
+            user_id         INTEGER PRIMARY KEY,
+            specialty       TEXT,
+            bio             TEXT,
+            approval_status TEXT DEFAULT 'Pending',
             FOREIGN KEY(user_id) REFERENCES Users(id) ON DELETE CASCADE
         )
     ''')

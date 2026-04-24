@@ -528,10 +528,9 @@ KnowLaw-AI/  (project root)
 ├── vault_manager.py                ← Chat history save/load/delete
 ├── database_setup.py               ← DB table creation (run once)
 ├── brain_AI_databese(vector).py    ← Vector DB builder (run once, ~20 min)
-├── generate_data.py                ← Generates sample lawyers.csv
+├── generate_data.py                ← Optional placeholder (Lawyer Directory is populated via registration + admin approval)
 │
 ├── knowlaw.db                      ← SQLite database (auto-created)
-├── lawyers.csv                     ← Lawyer directory seed data
 ├── .env                            ← Secrets (not shared — add to .gitignore)
 ├── .env.example                    ← Template showing all required variables
 ├── requirements.txt                ← Python dependencies for main app

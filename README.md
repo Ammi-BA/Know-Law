@@ -7,130 +7,40 @@ Arabic NLP, and two fine-tuned AI models trained on 5,340 cleaned Egyptian law a
 ---
 
 ## 📂 Repository Structure (Where to Start)
-If you are reading the code for the first time, we recommend reading the files in this order:
+If you are reading the code for the first time, we recommend reading the Python logic files in order from top to bottom.
 
+### 1. Core Application Logic
 | File Name | Purpose |
 | :--- | :--- |
 | **`App.py`** | **(Start Here)** The main Streamlit user interface and routing logic. |
-| **`auth.py`** | Security module (User login, Registration, Password hashing). |
+| **`auth.py`** | Security module (User login, Registration, Password hashing, Appointments). |
 | **`database_setup.py`** | SQLite schema builder. Creates the local user tables. |
 | **`brain_AI_databese(vector).py`** | AI Engine. Builds the vector database for Llama 3 to search. |
 | **`vault_manager.py`** | Helper functions for saving and loading chat history. |
-| **`SETUP_GUIDE.md`** | Detailed installation instructions for new developers. |
+| **`generate_data.py`** | Generates sample lawyer profiles for testing the directory. |
 
----
+### 2. Configuration & Setup
+| File Name | Purpose |
+| :--- | :--- |
+| **`SETUP_GUIDE.md`** | Detailed installation instructions for new developers cloning the repository. |
+| **`requirements.txt`** | Python dependencies required to run the app (`pip install -r`). |
+| **`.env.example`** | Template for environment variables (passwords and API keys). |
+| **`.gitignore`** | Tells GitHub to block sensitive files (like databases and passwords). |
 
-## Features
+### 3. Data & Databases
+| Folder / File Name | Purpose |
+| :--- | :--- |
+| **`cleaned_datasets/`** | The 5,340 cleaned Egyptian law articles used for the AI. |
+| **`lawyers.csv`** | The generated mock data for the Lawyer Directory. |
+| **`law_db/`** | *(Generated locally)* The Chroma vector database built from the CSVs. |
+| **`knowlaw.db`** | *(Generated locally)* SQLite database storing users and chat history. |
+| **`my_laws/`** | Legacy folder containing the original, uncleaned datasets. |
 
-| Feature | Description |
-|---|---|
-| ⚖️ **Legal Chatbot** | Ask any question about Egyptian law in Arabic or English |
-| 📄 **Document Analysis** | Upload scanned documents for OCR text extraction, chat with them, and generate instant AI summaries. |
-| ✍️ **Contract Generator** | Generate complete bilingual (Arabic & English) legal contracts based on user input. |
-| 👨‍⚖️ **Lawyer Directory** | Browse, filter and contact approved Egyptian lawyers |
-| 📋 **Appointments** | Citizens send requests to lawyers; lawyers accept/decline with responses |
-| 🔐 **Secure Auth** | Login / register with bcrypt-hashed passwords, role-based access (Citizen / Lawyer / Admin) |
-
----
-
-## AI Models Used
-
-| Component | Model | Status | Purpose |
-|---|---|---|---|
-| Embedding (Retrieval) | Fine-Tuned BGE-M3 | ✅ **ACTIVE** | Domain-adapted on Egyptian law — converts questions & articles to vectors. MRR +49.63% vs base. |
-| LLM | `llama3:8b` via Ollama | ✅ **ACTIVE** | Generates legal answers and Arabic contracts |
-| OCR | Tesseract (`ara+eng`) | ✅ **ACTIVE** | Reads Arabic text from scanned document images |
-| Legal Classifier | Fine-Tuned AraBERT v2 | ✅ **ACTIVE** | Classifies each question into 1 of 18 law categories — shown as badge before every answer (91.23% accuracy) |
-
----
-
-## Quick Start
-
-### 0. Install System Dependencies
-This project requires two external AI engines to be installed on your computer:
-1. **Ollama (Local LLM):** Download from [ollama.com](https://ollama.com/). Once installed, open a terminal and run `ollama pull llama3:8b`.
-2. **Tesseract OCR (for Arabic Document Analysis):** 
-   - Download the Windows installer from the [UB-Mannheim repository](https://github.com/UB-Mannheim/tesseract/wiki).
-   - Install it to the default path: `C:\Program Files\Tesseract-OCR`
-   - **Important:** During installation, expand "Additional language data (download)" and select **Arabic**.
-
-### 1. Install Python dependencies
-```powershell
-pip install -r requirements.txt
-```
-
-### 2. Set up environment variables
-Copy `.env.example` to `.env` and fill in your values:
-```
-ADMIN_EMAIL=admin@knowlaw.com
-ADMIN_PASSWORD=your_secure_password
-```
-
-### 3. Set up the database (run once)
-```powershell
-python database_setup.py
-```
-
-### 4. Build the vector database (run once — takes ~20 min)
-```powershell
-python "brain_AI_databese(vector).py"
-```
-> Make sure Ollama is installed and running: `ollama serve`  
-> Pull the LLM: `ollama pull llama3:8b`
-
-### 5. Run the app
-```powershell
-streamlit run App.py
-```
-
-
-
-## Project Structure
-
-```
-e:\project_prototype\
-│
-├── App.py                           Main Streamlit application
-├── auth.py                          Authentication, user management, appointments
-├── vault_manager.py                 Chat history (SQLite)
-├── database_setup.py                Creates database tables and default admin
-├── brain_AI_databese(vector).py     Builds Chroma vector DB from law CSVs
-├── generate_data.py                 Generates sample lawyer data (lawyers.csv)
-│
-├── knowlaw.db                       SQLite database (auto-created)
-├── lawyers.csv                      Lawyer directory data
-├── .env                             Environment variables (not committed)
-├── .env.example                     Template for .env
-├── requirements.txt                 Python dependencies
-│
-├── law_db/                          Chroma vector database (auto-created by brain script)
-│
-├── fine_tuning/                     AI Model Training Research
-│   ├── arabert_legal_classifier.py  Fine-Tuning 2: AraBERT legal topic classifier
-│   ├── bge_m3_finetune.py           Fine-Tuning 1: BGE-M3 Egyptian law domain adaptation
-│   ├── requirements_finetuning.txt  AraBERT pip requirements
-│   ├── requirements_bge_finetuning.txt  BGE-M3 pip requirements
-│   └── outputs/
-│       ├── best_model/              Saved AraBERT classifier (91.23% accuracy)
-│       ├── confusion_matrix.png     AraBERT test set confusion matrix
-│       ├── learning_curves.png      AraBERT training curves (loss / accuracy / F1)
-│       ├── final_metrics.json       AraBERT real metrics from training run
-│       ├── training_log.txt         AraBERT full training log
-│       └── bge_m3_finetuned/
-│           ├── model/               Saved fine-tuned BGE-M3 checkpoint
-│           ├── training_curves.png  BGE-M3 before/after comparison chart
-│           ├── eval_metrics.json    BGE-M3 real metrics (MRR +49.63%)
-│           └── training_log.txt     BGE-M3 training log
-│
-├── model_benchmarks/                Academic Documentation
-│   ├── Model_Comparison_Report.md   Model selection report (all 3-model comparisons + metrics)
-│   └── Architectural_Plan.md        System architecture + data flow + fine-tuning explanation
-│
-├── my_laws/                         Legacy CSV folder (original, unclean — superseded by cleaned_datasets)
-│
-├── LLM/                             Ollama installer (system software — can be moved out of project)
-└── OCR/                             Tesseract installer (system software — can be moved out of project)
-```
+### 4. Research & Fine-Tuning
+| Folder Name | Purpose |
+| :--- | :--- |
+| **`model_benchmarks/`** | Academic reports comparing models and explaining the system architecture. |
+| **`fine_tuning/`** | The Python scripts and graphs used to custom train AraBERT and BGE-M3. |
 
 ---
 

@@ -21,7 +21,7 @@ Before running any Python code, you must install the following core AI engines o
 - Install it to the default path: `C:\Program Files\Tesseract-OCR`
 
 > ⚠️ **PATH CONFIGURATION WARNING**  
-> If you installed Tesseract on a Mac, Linux, or a custom drive (like `D:\`), you MUST open `App.py` and change **Line 28** to match your actual installation path:  
+> If you installed Tesseract on a Mac, Linux, or a custom drive (like `D:\`), you MUST open `App.py` and find the line that says `TESSERACT_CMD_PATH` and change it to match your actual installation path:  
 > `TESSERACT_CMD_PATH = r"Your\Custom\Path\Here\tesseract.exe"`
 
 ---

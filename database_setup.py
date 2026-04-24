@@ -30,7 +30,7 @@ def setup_database():
     # 1. Create the physical Vault folder if it doesn't exist
     if not os.path.exists(VAULT_FOLDER):
         os.makedirs(VAULT_FOLDER)
-        print(f"📁 Created secure storage folder: {VAULT_FOLDER}")
+        print("📁 Created secure storage folder: vault_data/")
 
     # 2. Connect to SQLite (Creates the file if it doesn't exist)
     conn = sqlite3.connect(DB_NAME)
@@ -134,7 +134,7 @@ def setup_database():
     # Save changes and close
     conn.commit()
     conn.close()
-    print(f"✅ Database setup complete! Everything is saved in '{DB_NAME}'")
+    print("✅ Database setup complete! knowlaw.db is ready.")
 
 if __name__ == "__main__":
     setup_database()

@@ -13,6 +13,9 @@
 # Do not upload the SQLite database since it contains local user passwords and appointments
 knowlaw.db
 
+# Leftover CSV from old data generation approach — not used by the app
+lawyers.csv
+
 # Do not upload the massive Vector DB folder (it can be regenerated easily by running the script)
 law_db/
 

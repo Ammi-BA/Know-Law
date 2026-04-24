@@ -32,7 +32,15 @@ Arabic NLP, and two fine-tuned AI models trained on 5,340 cleaned Egyptian law a
 
 ## Quick Start
 
-### 1. Install dependencies
+### 0. Install System Dependencies
+This project requires two external AI engines to be installed on your computer:
+1. **Ollama (Local LLM):** Download from [ollama.com](https://ollama.com/). Once installed, open a terminal and run `ollama pull llama3:8b`.
+2. **Tesseract OCR (for Arabic Document Analysis):** 
+   - Download the Windows installer from the [UB-Mannheim repository](https://github.com/UB-Mannheim/tesseract/wiki).
+   - Install it to the default path: `C:\Program Files\Tesseract-OCR`
+   - **Important:** During installation, expand "Additional language data (download)" and select **Arabic**.
+
+### 1. Install Python dependencies
 ```powershell
 pip install -r requirements.txt
 ```

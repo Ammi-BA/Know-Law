@@ -6,6 +6,20 @@ Arabic NLP, and two fine-tuned AI models trained on 5,340 cleaned Egyptian law a
 
 ---
 
+## 📂 Repository Structure (Where to Start)
+If you are reading the code for the first time, we recommend reading the files in this order:
+
+| File Name | Purpose |
+| :--- | :--- |
+| **`App.py`** | **(Start Here)** The main Streamlit user interface and routing logic. |
+| **`auth.py`** | Security module (User login, Registration, Password hashing). |
+| **`database_setup.py`** | SQLite schema builder. Creates the local user tables. |
+| **`brain_AI_databese(vector).py`** | AI Engine. Builds the vector database for Llama 3 to search. |
+| **`vault_manager.py`** | Helper functions for saving and loading chat history. |
+| **`SETUP_GUIDE.md`** | Detailed installation instructions for new developers. |
+
+---
+
 ## Features
 
 | Feature | Description |
@@ -69,21 +83,7 @@ python "brain_AI_databese(vector).py"
 streamlit run App.py
 ```
 
----
 
-## 📂 Repository Structure (Where to Start)
-If you are reading the code for the first time, we recommend reading the files in this order:
-
-| File Name | Purpose |
-| :--- | :--- |
-| **`App.py`** | **(Start Here)** The main Streamlit user interface and routing logic. |
-| **`auth.py`** | Security module (User login, Registration, Password hashing). |
-| **`database_setup.py`** | SQLite schema builder. Creates the local user tables. |
-| **`brain_AI_databese(vector).py`** | AI Engine. Builds the vector database for Llama 3 to search. |
-| **`vault_manager.py`** | Helper functions for saving and loading chat history. |
-| **`SETUP_GUIDE.md`** | Detailed installation instructions for new developers. |
-
----
 
 ## Project Structure
 

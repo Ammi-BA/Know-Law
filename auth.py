@@ -121,6 +121,7 @@ def init_db():
             id           INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id      INTEGER NOT NULL,
             session_name TEXT    NOT NULL,
+            session_type TEXT    DEFAULT 'chat',
             chat_json    TEXT    NOT NULL,
             updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) REFERENCES Users(id) ON DELETE CASCADE

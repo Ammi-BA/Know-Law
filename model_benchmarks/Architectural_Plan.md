@@ -2,7 +2,7 @@
 ## How the Entire Project Works — Full Technical Explanation
 
 **Project:** KnowLaw AI  
-**Student:** [Your Name]  
+**Student:** KnowLaw AI — Graduation Project  
 **Date:** April 2026
 
 ---

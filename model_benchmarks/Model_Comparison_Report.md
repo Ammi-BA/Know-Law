@@ -2,7 +2,7 @@
 ## Egyptian Legal AI System — Graduation Project
 
 **Project Name:** KnowLaw AI  
-**Student:** [Your Name]  
+**Student:** KnowLaw AI — Graduation Project  
 **Date:** April 2026
 
 ---

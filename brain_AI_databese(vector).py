@@ -36,7 +36,7 @@ MODEL_NAME = _FINETUNED_PATH if os.path.isdir(_FINETUNED_PATH) else "BAAI/bge-m3
 def load_all_csvs(folder_path):
     all_files = glob.glob(os.path.join(folder_path, "*.csv"))
     if not all_files:
-        print(f"❌ No CSV files found in: {folder_path}")
+        print(f"❌ No CSV files found in the cleaned_datasets/ folder.")
         return pd.DataFrame()
 
     df_list = []
@@ -82,7 +82,7 @@ def create_vector_db(df):
     
     if os.path.exists(DB_FOLDER): shutil.rmtree(DB_FOLDER)
 
-    print(f"💾 Building Database in '{DB_FOLDER}' (This takes time)...")
+    print(f"💾 Building Database in 'law_db/' (This takes time)...")
     Chroma.from_documents(documents=chunks, embedding=embedding_model, persist_directory=DB_FOLDER)
     print("✅ Database created successfully!")
 

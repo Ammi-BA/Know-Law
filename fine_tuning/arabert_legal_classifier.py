@@ -74,7 +74,7 @@ LABEL_MAP = {
     "finished_dataset_for_penalty_law":                 "Penalty Law",
     "final_dataset_for_labor_constitution":             "Labor & Constitutional",
     "finished_dataset_for_family_law2":                 "Family Law",
-    "final_dataset_for_invesment":                      "Investment Law",
+    "final_dataset_for_invesment":                      "Investment Law",   # CSV filename has this spelling
     "finished_dataset_for_main_bank":                   "Banking Law",
     "law_for_money_capital":                            "Capital Markets Law",
     "Data_Protection_Law_dataset":                      "Data Protection Law",
@@ -82,8 +82,8 @@ LABEL_MAP = {
     "finished_dataset_for_civil_comircial_procedures":  "Civil & Commercial Procedures",
     "finished_dataset_for_magles_eldawla":              "State Council Law",
     "final_dataset_fro_Protection_of_Competition":      "Competition Law",
-    "final_dataset_law_of_inhertince":                  "Inheritance Law",
-    "landord_lawnew-old":                               "Landlord & Tenant Law",
+    "final_dataset_law_of_inhertince":                  "Inheritance Law",  # CSV filename has this spelling
+    "landord_lawnew-old":                               "Landlord & Tenant Law",  # CSV filename has this spelling
     "final_dataset_for_Consumer_Protection_Law":        "Consumer Protection Law",
 }
 

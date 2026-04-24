@@ -31,7 +31,6 @@ If you are reading the code for the first time, we recommend reading the Python 
 | Folder / File Name | Purpose |
 | :--- | :--- |
 | **`cleaned_datasets/`** | The 5,340 cleaned Egyptian law articles used for the AI. |
-
 | **`law_db/`** | *(Generated locally)* The Chroma vector database built from the CSVs. |
 | **`knowlaw.db`** | *(Generated locally)* SQLite database storing users and chat history. |
 | **`my_laws/`** | Legacy folder containing the original, uncleaned datasets. |

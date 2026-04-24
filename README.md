@@ -46,10 +46,9 @@ If you are reading the code for the first time, we recommend reading the Python 
 
 ## Dataset
 
-- **Location:** `e:\data_set for egyptianlaw\cleaned_datasets\`
-- **Size:** 5,340 cleaned law article rows across 18 CSV files
-- **Cleaning script:** `e:\data_set for egyptianlaw\clean_and_optimize_datasets.py`
-- **Original (raw):** `e:\project_prototype\my_laws\` (kept as backup reference)
+- **Location:** `cleaned_datasets/` (Included in this repository)
+- **Size:** 5,340 cleaned Egyptian law article rows across 18 CSV files
+- **Original (raw):** `my_laws/` (kept as backup reference for comparison)
 
 ### Law Categories Covered
 Civil Law · Commercial Law · Companies Law · Criminal Procedure · Penalty Law ·

@@ -9,12 +9,17 @@
 
 ---
 
-## ✅ Author Checklist (Done by You)
-- [ ] My code runs without errors
-- [ ] No hardcoded passwords, secrets, or `.env` files
-- [ ] No debug `print()` statements left in the code
-- [ ] My branch name is clear and descriptive
-- [ ] If I changed the database, I updated both `auth.py` and `database_setup.py`
+## ✅ Author Checklist (Phase 3 & QA Requirements)
+- [ ] Self-review completed (walked through own code)
+- [ ] My code runs without errors or unhandled exceptions
+- [ ] Code follows correct style (indentation, naming, comments)
+- [ ] No duplicated or commented-out code
+- [ ] No hardcoded passwords or secrets
+
+## 🧪 Testing Checklist (Phase 3)
+- [ ] Happy path tested (normal inputs, expected behavior)
+- [ ] Edge cases tested (empty, null, max/min values)
+- [ ] Negative tests performed (invalid inputs, wrong data types)
 
 ---
 

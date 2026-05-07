@@ -115,3 +115,15 @@ class TestAuthentication:
         # the app should NOT crash. It should just safely deny login (return False).
         assert check_password("password", "invalid_hash_string") == False
         assert check_password("password", "") == False
+
+    def test_legacy_sha256_password_verification(self):
+        # auth.py supports a legacy SHA-256 fallback path for accounts created before
+        # bcrypt was adopted.  A stored SHA-256 hex digest (no $2b$ prefix) must still
+        # verify correctly instead of silently locking users out.
+        import hashlib
+        password = "LegacyPassword123"
+        legacy_hash = hashlib.sha256(password.encode()).hexdigest()
+        # Correct password against its legacy hash → True
+        assert check_password(password, legacy_hash) == True
+        # Wrong password against the same legacy hash → False
+        assert check_password("WrongLegacyPassword", legacy_hash) == False

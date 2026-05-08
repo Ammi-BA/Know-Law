@@ -66,7 +66,7 @@ def register():
         "bio":       "10 years exp."   <-- Lawyers only
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -113,7 +113,7 @@ def login():
         "password": "securepass123"
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -216,7 +216,7 @@ def book_appointment():
         "message":    "I need help with a property dispute."
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -273,7 +273,7 @@ def respond_appointment(appointment_id):
         "response": "Available on Thursday at 4pm."
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -306,7 +306,7 @@ def request_password_reset():
     NOTE: In a real app the token would be emailed. Here it is returned
     in the response so you can use it directly in Postman.
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -335,7 +335,7 @@ def validate_reset_token():
         "token": "abc123xyz..."
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -364,7 +364,7 @@ def reset_password():
         "new_password": "mynewpassword99"
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 
@@ -403,7 +403,7 @@ def save_chat():
         ]
     }
     """
-    data = request.get_json()
+    data = request.get_json(force=True, silent=True)
     if not data:
         return err("Request body must be JSON.")
 

@@ -1374,14 +1374,34 @@ elif st.session_state.page == "contract":
                            mime="text/plain", use_container_width=True)
         st.stop()
 
-    st.header("✍️ Automated Contract Generator")
-    st.markdown("<p style='color:#8b949e;'>Generate professional legal contracts powered by AI.</p>",
-                unsafe_allow_html=True)
+    # ── Step 1: Language Selection (rendered first — drives everything below) ───
+    st.markdown("### 🌐 اختر لغة العقد &nbsp;|&nbsp; Choose Contract Language", unsafe_allow_html=True)
+    col_ar, col_en = st.columns(2)
+    with col_ar:
+        if st.button("🇪🇬  العربية", use_container_width=True,
+                     type="primary" if st.session_state.get("contract_lang_sel") != "en" else "secondary",
+                     key="lang_btn_ar"):
+            st.session_state["contract_lang_sel"] = "ar"
+    with col_en:
+        if st.button("🇬🇧  English", use_container_width=True,
+                     type="primary" if st.session_state.get("contract_lang_sel") == "en" else "secondary",
+                     key="lang_btn_en"):
+            st.session_state["contract_lang_sel"] = "en"
 
-    # ── Language Selection ──────────────────────────────────────────────────────
-    lang_choice = st.radio("🌐 Contract Language / لغة العقد", ["العربية (Arabic)", "English"], horizontal=True, key="contract_lang")
-    is_ar = "العربية" in lang_choice
+    is_ar = st.session_state.get("contract_lang_sel", "ar") != "en"
+    st.divider()
 
+    # ── Page header (language-aware) ──────────────────────────────────────────
+    if is_ar:
+        st.header("✍️ منشئ العقود الآلي")
+        st.markdown("<p style='color:#8b949e;'>أنشئ عقوداً قانونية احترافية بالذكاء الاصطناعي.</p>",
+                    unsafe_allow_html=True)
+    else:
+        st.header("✍️ Automated Contract Generator")
+        st.markdown("<p style='color:#8b949e;'>Generate professional legal contracts powered by AI.</p>",
+                    unsafe_allow_html=True)
+
+    # ── Step 2: Contract Type ─────────────────────────────────────────────────
     c_type_options = (
         ["عقد إيجار", "عقد عمل", "عقد بيع", "عقد مقاولة"] if is_ar
         else ["Lease Agreement", "Employment Contract", "Sales Contract", "Contractor Agreement"]

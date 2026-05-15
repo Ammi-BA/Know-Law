@@ -18,6 +18,12 @@ import pypdf
 import pytesseract
 from PIL import Image
 
+# Contract V&V
+from contract_validator import ContractValidator
+
+# AraT5 Contract Generator
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
 # LangChain
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -318,6 +324,38 @@ def load_arabert_classifier():
         return None, None, None
 
 
+@st.cache_resource
+def load_arat5_generator():
+    """
+    Loads the fine-tuned AraT5 contract generator model.
+    Model fine-tuned on 2,000 Egyptian contract pairs (10 epochs, train_loss=0.0864).
+    Saved at outputs/arat5_contract_generator/best_model relative to repo root.
+    Returns (model, tokenizer) or (None, None) if the model directory is not found.
+    """
+    # Primary path: same directory as App.py (works for main project)
+    MODEL_PATH = os.path.join(BASE_DIR, "outputs", "arat5_contract_generator", "best_model")
+
+    # Fallback: walk up from BASE_DIR for git worktree environments
+    if not os.path.isdir(MODEL_PATH):
+        parent = os.path.dirname(BASE_DIR)
+        for _ in range(5):
+            candidate = os.path.join(parent, "outputs", "arat5_contract_generator", "best_model")
+            if os.path.isdir(candidate):
+                MODEL_PATH = candidate
+                break
+            parent = os.path.dirname(parent)
+
+    if not os.path.isdir(MODEL_PATH):
+        return None, None
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+        model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
+        model.eval()
+        return model, tokenizer
+    except Exception:
+        return None, None
+
+
 def classify_question(text: str) -> str | None:
     """
     Run AraBERT classifier on `text`.
@@ -354,8 +392,9 @@ def classify_question(text: str) -> str | None:
 # Show spinner ONLY on first load (not on every rerun / button click)
 if not st.session_state.ai_loaded:
     with st.spinner("⚡ Initialising AI engine… (first load only)"):
-        embedding_model, llm  = load_engine()
-        _clf, _tok, _lmap     = load_arabert_classifier()
+        embedding_model, llm        = load_engine()
+        _clf, _tok, _lmap           = load_arabert_classifier()
+        _arat5_model, _arat5_tok    = load_arat5_generator()
     st.session_state.ai_loaded = True
     _ft_path = os.path.join(BASE_DIR, "fine_tuning", "outputs", "bge_m3_finetuned", "model")
     if os.path.isdir(_ft_path):
@@ -364,8 +403,11 @@ if not st.session_state.ai_loaded:
         st.toast("⚠️ Fine-tuned BGE-M3 not found — using base model", icon="⚠️")
     if _clf is not None:
         st.toast("✅ AraBERT classifier loaded (18 law categories)", icon="⚖️")
+    if _arat5_model is not None:
+        st.toast("✅ AraT5 Contract Generator loaded", icon="✍️")
 else:
     embedding_model, llm = load_engine()
+    _arat5_model, _arat5_tok = load_arat5_generator()
 
 
 
@@ -1349,8 +1391,8 @@ elif st.session_state.page == "contract":
     st.divider()
     contract_data = {}
 
-    # ── Helper: stream contract with save ──────────────────────────────────────
-    def _generate_and_save(prompt, spinner_msg, sess_title):
+    # ── Helper: stream contract with save + V&V validation ─────────────────────
+    def _generate_and_save(prompt, spinner_msg, sess_title, validator_category=None):
         with st.spinner(spinner_msg):
             box = st.empty()
             full_contract = ""
@@ -1363,12 +1405,36 @@ elif st.session_state.page == "contract":
                 st.error("⚠️ **عذراً، محرك الذكاء الاصطناعي لا يعمل (AI Engine Offline):** يرجى التأكد من تشغيل خادم Ollama في الخلفية." if is_ar
                          else "⚠️ **AI Engine Offline:** Please make sure Ollama is running in the background.")
                 st.stop()
+
         if full_contract:
             vault_manager.save_chat(
                 st.session_state.user_info["id"], sess_title,
                 [{"role": "assistant", "content": full_contract}],
                 session_type="contract",
             )
+            # ── Contract V&V (Verification & Validation) ─────────────────────
+            if validator_category:
+                try:
+                    vv = ContractValidator()
+                    is_valid, struct_errs, legal_warns = vv.process_ai_output(
+                        full_contract, validator_category
+                    )
+                    if is_valid:
+                        st.success("✅ **تحقق العقد:** العقد مكتمل قانونياً ويحتوي على جميع البنود المطلوبة." if is_ar
+                                   else "✅ **Contract V&V:** Contract is legally sound — all required clauses present.")
+                    else:
+                        with st.warning("⚠️ **تحقق العقد:** يُرجى مراجعة التحذيرات أدناه." if is_ar
+                                        else "⚠️ **Contract V&V:** Review the validation warnings below."):
+                            pass
+                        if struct_errs:
+                            label = "أخطاء هيكلية:" if is_ar else "Structural Errors:"
+                            st.error(f"**{label}** " + " | ".join(struct_errs))
+                        if legal_warns:
+                            label = "تحذيرات قانونية:" if is_ar else "Legal Warnings:"
+                            st.warning(f"**{label}** " + " | ".join(legal_warns))
+                except Exception:
+                    pass  # Never block contract delivery due to validator failure
+
         return full_contract
 
     # ─────────────────────────────────────────────────────────
@@ -1464,7 +1530,7 @@ elif st.session_state.page == "contract":
 - Additional Terms: {contract_data['special'] or 'None'}
 Write the full contract with all legal clauses (definitions, obligations, termination, dispute resolution, signatures). Start directly with the contract text."""
                 sess_title = f"{'عقد إيجار' if is_ar else 'Lease'}: {contract_data['landlord']} ↔ {contract_data['tenant']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting your lease contract…", sess_title)
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting your lease contract…", sess_title, validator_category="lease_or_sale")
                 st.download_button("⬇️ تحميل العقد (.txt)" if is_ar else "⬇️ Download Contract (.txt)",
                     data=full_contract.encode("utf-8"),
                     file_name=f"Lease_{contract_data['landlord']}_{contract_data['tenant']}.txt",
@@ -1549,7 +1615,7 @@ Write the full contract with all legal clauses (definitions, obligations, termin
 - Additional Benefits: {contract_data['benefits'] or 'None'}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد عمل' if is_ar else 'Employment'}: {contract_data['employer']} ↔ {contract_data['employee']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting employment contract…", sess_title)
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting employment contract…", sess_title, validator_category="employment")
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Employment_{contract_data['employer']}_{contract_data['employee']}.txt",
                     mime="text/plain", use_container_width=True)
@@ -1622,7 +1688,7 @@ Write the full contract with all legal clauses. Start directly with the contract
 - Additional Terms: {contract_data['special'] or none_txt}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد بيع' if is_ar else 'Sales'}: {contract_data['seller']} ↔ {contract_data['buyer']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting sales contract…", sess_title)
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting sales contract…", sess_title, validator_category="lease_or_sale")
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Sales_{contract_data['seller']}_{contract_data['buyer']}.txt",
                     mime="text/plain", use_container_width=True)
@@ -1698,7 +1764,7 @@ Write the full contract with all legal clauses. Start directly with the contract
 - Additional Terms: {contract_data['special'] or none_txt}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد مقاولة' if is_ar else 'Contractor'}: {contract_data['client']} ↔ {contract_data['contractor']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting contractor agreement…", sess_title)
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting contractor agreement…", sess_title, validator_category="partnership")
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Contractor_{contract_data['client']}_{contract_data['contractor']}.txt",
                     mime="text/plain", use_container_width=True)

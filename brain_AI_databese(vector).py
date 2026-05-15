@@ -46,8 +46,11 @@ def load_all_csvs(folder_path):
         try:
             df = pd.read_csv(file)
         except UnicodeDecodeError:
-            try: df = pd.read_csv(file, encoding='windows-1256')
-            except: continue
+            try:
+                df = pd.read_csv(file, encoding='windows-1256')
+            except Exception as e:
+                print(f"   ⚠️  Skipping {os.path.basename(file)}: {e}")
+                continue
             
         if 'text' not in df.columns:
             potential_cols = [c for c in df.columns if 'content' in c.lower() or 'text' in c.lower() or 'مادة' in c.lower()]

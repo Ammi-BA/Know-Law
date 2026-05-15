@@ -1422,28 +1422,33 @@ elif st.session_state.page == "contract":
             # AraT5: fine-tuned Egyptian contract generator (Arabic only)
             with st.spinner(spinner_msg):
                 try:
-                    inputs = arat5_t(
+                    enc = arat5_t(
                         arat5_short_prompt,
                         return_tensors="pt",
                         max_length=128,
                         truncation=True,
                         padding=True,
                     )
+                    device = next(arat5_m.parameters()).device
+                    input_ids      = enc["input_ids"].to(device)
+                    attention_mask = enc["attention_mask"].to(device)
                     with torch.no_grad():
-                        outputs = arat5_m.generate(
-                            **inputs,
+                        output_ids = arat5_m.generate(
+                            input_ids=input_ids,
+                            attention_mask=attention_mask,
                             max_new_tokens=512,
                             num_beams=4,
                             early_stopping=True,
                             no_repeat_ngram_size=3,
                         )
-                    full_contract = arat5_t.decode(outputs[0], skip_special_tokens=True)
+                    full_contract = arat5_t.decode(output_ids[0], skip_special_tokens=True)
                     st.markdown(full_contract)
-                except Exception:
-                    use_arat5 = False  # silently fall back to Llama 3
+                except Exception as e:
+                    st.error(f"⚠️ **خطأ في نموذج AraT5:** {e}\n\nيرجى التواصل مع الدعم الفني.")
+                    st.stop()
 
         if not use_arat5:
-            # Llama 3 via Ollama: used for English contracts and as fallback
+            # Llama 3 via Ollama: English contracts only
             with st.spinner(spinner_msg):
                 box = st.empty()
                 try:
@@ -1452,8 +1457,7 @@ elif st.session_state.page == "contract":
                         box.markdown(full_contract + "▌")
                     box.markdown(full_contract)
                 except Exception:
-                    st.error("⚠️ **عذراً، محرك الذكاء الاصطناعي لا يعمل (AI Engine Offline):** يرجى التأكد من تشغيل خادم Ollama في الخلفية." if is_ar
-                             else "⚠️ **AI Engine Offline:** Please make sure Ollama is running in the background.")
+                    st.error("⚠️ **AI Engine Offline:** Please make sure Ollama is running in the background.")
                     st.stop()
 
         if full_contract:

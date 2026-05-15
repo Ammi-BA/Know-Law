@@ -1391,20 +1391,50 @@ elif st.session_state.page == "contract":
     st.divider()
     contract_data = {}
 
-    # ── Helper: stream contract with save + V&V validation ─────────────────────
-    def _generate_and_save(prompt, spinner_msg, sess_title, validator_category=None):
-        with st.spinner(spinner_msg):
-            box = st.empty()
-            full_contract = ""
-            try:
-                for chunk in llm.stream(prompt):
-                    full_contract += chunk.content
-                    box.markdown(full_contract + "▌")
-                box.markdown(full_contract)
-            except Exception:
-                st.error("⚠️ **عذراً، محرك الذكاء الاصطناعي لا يعمل (AI Engine Offline):** يرجى التأكد من تشغيل خادم Ollama في الخلفية." if is_ar
-                         else "⚠️ **AI Engine Offline:** Please make sure Ollama is running in the background.")
-                st.stop()
+    # ── Helper: generate contract (AraT5 for Arabic, Llama 3 for English) ──────
+    def _generate_and_save(prompt, spinner_msg, sess_title, validator_category=None, arat5_short_prompt=None):
+        full_contract = ""
+        arat5_m, arat5_t = load_arat5_generator()
+        use_arat5 = (is_ar and arat5_short_prompt is not None
+                     and arat5_m is not None and arat5_t is not None)
+
+        if use_arat5:
+            # AraT5: fine-tuned Egyptian contract generator (Arabic only)
+            with st.spinner(spinner_msg):
+                try:
+                    inputs = arat5_t(
+                        arat5_short_prompt,
+                        return_tensors="pt",
+                        max_length=128,
+                        truncation=True,
+                        padding=True,
+                    )
+                    with torch.no_grad():
+                        outputs = arat5_m.generate(
+                            **inputs,
+                            max_new_tokens=512,
+                            num_beams=4,
+                            early_stopping=True,
+                            no_repeat_ngram_size=3,
+                        )
+                    full_contract = arat5_t.decode(outputs[0], skip_special_tokens=True)
+                    st.markdown(full_contract)
+                except Exception:
+                    use_arat5 = False  # silently fall back to Llama 3
+
+        if not use_arat5:
+            # Llama 3 via Ollama: used for English contracts and as fallback
+            with st.spinner(spinner_msg):
+                box = st.empty()
+                try:
+                    for chunk in llm.stream(prompt):
+                        full_contract += chunk.content
+                        box.markdown(full_contract + "▌")
+                    box.markdown(full_contract)
+                except Exception:
+                    st.error("⚠️ **عذراً، محرك الذكاء الاصطناعي لا يعمل (AI Engine Offline):** يرجى التأكد من تشغيل خادم Ollama في الخلفية." if is_ar
+                             else "⚠️ **AI Engine Offline:** Please make sure Ollama is running in the background.")
+                    st.stop()
 
         if full_contract:
             vault_manager.save_chat(
@@ -1530,7 +1560,13 @@ elif st.session_state.page == "contract":
 - Additional Terms: {contract_data['special'] or 'None'}
 Write the full contract with all legal clauses (definitions, obligations, termination, dispute resolution, signatures). Start directly with the contract text."""
                 sess_title = f"{'عقد إيجار' if is_ar else 'Lease'}: {contract_data['landlord']} ↔ {contract_data['tenant']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting your lease contract…", sess_title, validator_category="lease_or_sale")
+                arat5_prompt = (
+                    f"صغ عقد: اكتب عقد إيجار {contract_data['prop_type']} بين "
+                    f"الطرف الأول {contract_data['landlord']} والطرف الثاني {contract_data['tenant']} "
+                    f"في {contract_data['prop_addr']} لمدة {contract_data['duration']} "
+                    f"بإيجار {contract_data['rent_amount']} جنيه شهرياً"
+                )
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting your lease contract…", sess_title, validator_category="lease_or_sale", arat5_short_prompt=arat5_prompt)
                 st.download_button("⬇️ تحميل العقد (.txt)" if is_ar else "⬇️ Download Contract (.txt)",
                     data=full_contract.encode("utf-8"),
                     file_name=f"Lease_{contract_data['landlord']}_{contract_data['tenant']}.txt",
@@ -1615,7 +1651,12 @@ Write the full contract with all legal clauses (definitions, obligations, termin
 - Additional Benefits: {contract_data['benefits'] or 'None'}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد عمل' if is_ar else 'Employment'}: {contract_data['employer']} ↔ {contract_data['employee']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting employment contract…", sess_title, validator_category="employment")
+                arat5_prompt = (
+                    f"صغ عقد: اكتب عقد عمل بين صاحب العمل {contract_data['employer']} "
+                    f"والموظف {contract_data['employee']} لمنصب {contract_data['job_title']} "
+                    f"براتب {contract_data['monthly_salary']} جنيه شهرياً في {contract_data['work_location']}"
+                )
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting employment contract…", sess_title, validator_category="employment", arat5_short_prompt=arat5_prompt)
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Employment_{contract_data['employer']}_{contract_data['employee']}.txt",
                     mime="text/plain", use_container_width=True)
@@ -1688,7 +1729,12 @@ Write the full contract with all legal clauses. Start directly with the contract
 - Additional Terms: {contract_data['special'] or none_txt}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد بيع' if is_ar else 'Sales'}: {contract_data['seller']} ↔ {contract_data['buyer']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting sales contract…", sess_title, validator_category="lease_or_sale")
+                arat5_prompt = (
+                    f"صغ عقد: اكتب عقد بيع {contract_data['item_type']} بين "
+                    f"البائع {contract_data['seller']} والمشتري {contract_data['buyer']} "
+                    f"بسعر {contract_data['price']} جنيه مصري وصف المبيع: {contract_data['item_desc']}"
+                )
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting sales contract…", sess_title, validator_category="lease_or_sale", arat5_short_prompt=arat5_prompt)
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Sales_{contract_data['seller']}_{contract_data['buyer']}.txt",
                     mime="text/plain", use_container_width=True)
@@ -1764,7 +1810,12 @@ Write the full contract with all legal clauses. Start directly with the contract
 - Additional Terms: {contract_data['special'] or none_txt}
 Write the full contract with all legal clauses. Start directly with the contract text."""
                 sess_title = f"{'عقد مقاولة' if is_ar else 'Contractor'}: {contract_data['client']} ↔ {contract_data['contractor']}"
-                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting contractor agreement…", sess_title, validator_category="partnership")
+                arat5_prompt = (
+                    f"صغ عقد: اكتب عقد مقاولة بين صاحب العمل {contract_data['client']} "
+                    f"والمقاول {contract_data['contractor']} لمشروع {contract_data['proj_type']} "
+                    f"في {contract_data['proj_location']} بقيمة {contract_data['total_value']} جنيه مصري"
+                )
+                full_contract = _generate_and_save(prompt, "✍️ جاري صياغة العقد…" if is_ar else "✍️ Drafting contractor agreement…", sess_title, validator_category="partnership", arat5_short_prompt=arat5_prompt)
                 st.download_button("⬇️ تحميل (.txt)" if is_ar else "⬇️ Download (.txt)", data=full_contract.encode("utf-8"),
                     file_name=f"Contractor_{contract_data['client']}_{contract_data['contractor']}.txt",
                     mime="text/plain", use_container_width=True)

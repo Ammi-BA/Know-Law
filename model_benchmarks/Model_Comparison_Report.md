@@ -37,14 +37,15 @@ All three fine-tuned models were trained on **our own Egyptian law dataset**, bu
 
 ## Functions of the System & Models Used
 
-| # | Function | What It Does | Model Type | Fine-Tuned on Our Data? |
+| # | Function | What It Does | Model Used | Fine-Tuned on Our Data? |
 |---|---|---|---|---|
-| 1 | Legal Article Retrieval | Searches the most relevant law articles for the user's question | Embedding Model | Yes (BGE-M3 FT-1) |
-| 2 | Legal Answer Generation | Reads retrieved articles and writes the answer | Large Language Model | No (Llama 3 base) |
-| 3 | Document Analysis (OCR) | Reads text from uploaded scanned Arabic documents | OCR Engine | No (Tesseract configured) |
-| 4 | Contract Generation | Writes full professional Arabic legal contracts | LLM + Fine-Tuned Seq2Seq | Yes (AraT5 FT-3) + No (Llama 3) |
-| 5 | Legal Topic Classifier | Classifies which of 18 Egyptian law areas a question belongs to | Fine-Tuned BERT Classifier | Yes (AraBERT FT-2) |
-| 6 | Contract V&V | Validates generated contracts for structural and legal completeness | Rule-Based Engine | N/A (deterministic rules) |
+| 1 | Legal Article Retrieval | Searches the most relevant law articles for the user's question | Fine-Tuned BGE-M3 | Yes (FT-1) |
+| 2 | Legal Answer Generation | Reads retrieved articles and writes a grounded legal answer | Llama 3 8B (via RAG) | No (base model) |
+| 3 | Document Analysis (OCR) | Reads text from uploaded scanned Arabic documents | Tesseract OCR | No (Arabic lang pack) |
+| 4 | Arabic Contract Generation | Generates formal Arabic contracts from user inputs | Fine-Tuned AraT5 | Yes (FT-3) |
+| 4b | English Contract Generation | Generates formal English contracts (Llama 3 fallback) | Llama 3 8B | No (base model) |
+| 5 | Legal Topic Classifier | Classifies which of 18 Egyptian law areas a question belongs to | Fine-Tuned AraBERT v2 | Yes (FT-2) |
+| 6 | Contract V&V | Validates generated contracts for structural and legal completeness | ContractValidator (rule-based) | N/A |
 
 ---
 
@@ -117,7 +118,7 @@ BGE-M3 scored highest in every metric. Its Recall@5 of **0.812** means it finds 
 
 After finding the relevant law articles, this model reads them and writes a clear legal answer for the user — in Arabic or English, strictly grounded in what the law says.
 
-**Note: Llama 3 8B was NOT fine-tuned on our dataset.** It is used as a base model via Ollama. Fine-tuning a 8B-parameter model requires 40–80GB VRAM (A100-class GPU), which was not available. Instead, RAG (Retrieval-Augmented Generation) is used to ground the model's output to our Egyptian law documents, avoiding hallucinations without requiring fine-tuning.
+**Note: Llama 3 8B was NOT fine-tuned on our dataset.** It handles legal Q&A only. Arabic contract generation is handled by the fine-tuned AraT5 model (Function 4). Fine-tuning an 8B-parameter model requires 40–80GB VRAM (A100-class GPU), which was not available. Instead, RAG (Retrieval-Augmented Generation) grounds the model's answers to our Egyptian law documents, avoiding hallucinations without requiring fine-tuning.
 
 ## The 3 Models Tested
 
@@ -908,7 +909,8 @@ This section consolidates all training metrics and evaluation outputs for all th
 | 1 | Legal Article Retrieval | **Fine-Tuned BGE-M3** | Yes — FT-1 | ✅ Active | MRR@10 = 0.5455 (+94.44% over base) |
 | 2 | Legal Answer Generation | **Llama 3 8B** | No (base model via Ollama) | ✅ Active | Hallucination = 9.2% (lowest) |
 | 3 | OCR Document Reading | **Tesseract OCR** | No (Arabic lang pack) | ✅ Active | Arabic Accuracy = 91.5% |
-| 4 | Contract Generation | **Llama 3 8B + Fine-Tuned AraT5** | Llama No / AraT5 Yes | ✅ Active | LCS = 87.4%; AraT5 train_loss = 0.0864 |
+| 4 | Arabic Contract Generation | **Fine-Tuned AraT5** | Yes (FT-3) | ✅ Active | train_loss = 0.0864, 10 epochs |
+| 4b | English Contract (fallback) | **Llama 3 8B** | No (base model) | ✅ Active | LCS = 87.4% |
 | 5 | Legal Topic Classifier | **Fine-Tuned AraBERT v2** | Yes — FT-2 | ✅ Active | Test Accuracy = 91.23%, Macro F1 = 0.8387 |
 | 6 | Contract V&V | **ContractValidator** | N/A (rule-based) | ✅ Active | Validates structure + legal keywords |
 | FT-1 | BGE-M3 Fine-Tuning | 5,309 pairs / 10 epochs | — | ✅ Done | Test MRR +94.44%, Cosine +47.78% |
